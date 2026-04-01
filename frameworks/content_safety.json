@@ -1,0 +1,84 @@
+{
+  "Content_Safety_Attacks": [
+    {
+      "id": "CONTENT_01_TOXICITY_BYPASS",
+      "action": "Block_Toxicity_Generation_Bypass",
+      "logic": "Detect and block attempts to generate toxic, hateful, or violent content through indirect framing, fiction, translation, or formatting tricks. Apply content safety evaluation on the decoded semantic meaning, not the surface text.",
+      "data": "[toxicity_classifier], [semantic_harm_score], [framing_invariant_filter]",
+      "access": "Role_Content_Security",
+      "event": "On_Harmful_Content_Generation"
+    },
+    {
+      "id": "CONTENT_02_CSAM_DETECTION",
+      "action": "Absolute_Block_CSAM",
+      "logic": "Implement absolute, non-negotiable blocking of any content depicting or describing child sexual abuse material. This is a hard boundary with zero tolerance and no exceptions regardless of framing, fiction status, or claimed purpose.",
+      "data": "[csam_classifier], [absolute_block_flag], [mandatory_reporting_trigger]",
+      "access": "Role_Trust_Safety",
+      "event": "On_CSAM_Signal"
+    },
+    {
+      "id": "CONTENT_03_BIAS_AMPLIFICATION",
+      "action": "Prevent_Bias_Amplification",
+      "logic": "Detect and mitigate outputs that amplify demographic biases, stereotypes, or discriminatory patterns. Apply fairness constraints that ensure equitable treatment across protected categories.",
+      "data": "[bias_detector], [fairness_constraint], [demographic_parity_check]",
+      "access": "Role_AI_Ethics_Officer",
+      "event": "On_Bias_Signal_Detected"
+    },
+    {
+      "id": "CONTENT_04_MISINFORMATION",
+      "action": "Block_Misinformation_Generation",
+      "logic": "Detect and prevent generation of verifiably false information presented as fact, especially in high-stakes domains (medical, legal, financial, electoral). Require source attribution for factual claims.",
+      "data": "[factuality_grounding], [source_attribution_enforcer], [high_stakes_domain_classifier]",
+      "access": "Role_Content_Security",
+      "event": "On_Factual_Claim_Generation"
+    },
+    {
+      "id": "CONTENT_05_SELF_HARM",
+      "action": "Block_Self_Harm_Promotion",
+      "logic": "Detect and block content that promotes, instructs, or glorifies self-harm, suicide, or eating disorders. Provide crisis resource information when genuine distress is detected.",
+      "data": "[self_harm_classifier], [crisis_resource_db], [distress_signal_detector]",
+      "access": "Role_Trust_Safety",
+      "event": "On_Self_Harm_Content_Signal"
+    },
+    {
+      "id": "CONTENT_06_WEAPONS_CBRN",
+      "action": "Block_Weapons_CBRN_Instructions",
+      "logic": "Absolutely block generation of instructions for creating chemical, biological, radiological, nuclear (CBRN) weapons or conventional explosives. Apply dual-use research awareness to distinguish legitimate scientific discussion from weaponization instructions.",
+      "data": "[cbrn_classifier], [dual_use_evaluator], [absolute_weapons_block]",
+      "access": "Role_National_Security",
+      "event": "On_Weapons_Content_Signal"
+    },
+    {
+      "id": "CONTENT_07_ILLEGAL_ACTIVITY",
+      "action": "Block_Illegal_Activity_Assistance",
+      "logic": "Detect and block requests for assistance with illegal activities including but not limited to: hacking unauthorized systems, creating malware, money laundering, human trafficking, or drug manufacturing.",
+      "data": "[illegal_activity_classifier], [jurisdiction_aware_policy], [activity_intent_analyzer]",
+      "access": "Role_Legal_Compliance",
+      "event": "On_Illegal_Activity_Request"
+    },
+    {
+      "id": "CONTENT_08_DEEPFAKE_ASSISTANCE",
+      "action": "Block_Deepfake_Creation_Assistance",
+      "logic": "Detect and prevent assistance in creating non-consensual deepfakes, impersonation content, or synthetic media designed to deceive or defame individuals.",
+      "data": "[deepfake_intent_detector], [consent_verification], [impersonation_block]",
+      "access": "Role_Content_Security",
+      "event": "On_Synthetic_Media_Request"
+    },
+    {
+      "id": "CONTENT_09_RADICALIZATION",
+      "action": "Block_Radicalization_Content",
+      "logic": "Detect and prevent generation of extremist propaganda, radicalization narratives, or recruitment materials for violent ideologies. Monitor for gradual narrative shifting toward extremist positions.",
+      "data": "[radicalization_trajectory_detector], [extremist_narrative_db], [narrative_drift_analyzer]",
+      "access": "Role_Trust_Safety",
+      "event": "On_Extremist_Content_Signal"
+    },
+    {
+      "id": "CONTENT_10_PRIVACY_VIOLATION",
+      "action": "Prevent_Privacy_Violating_Content",
+      "logic": "Detect and block generation of content that violates individual privacy including doxxing, non-consensual intimate imagery descriptions, stalking assistance, or unauthorized surveillance guidance.",
+      "data": "[privacy_violation_classifier], [doxxing_pattern_detector], [consent_framework]",
+      "access": "Role_Data_Protection_Officer",
+      "event": "On_Privacy_Violation_Signal"
+    }
+  ]
+}

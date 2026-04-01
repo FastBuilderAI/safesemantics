@@ -1,0 +1,68 @@
+{
+  "Model_Governance": [
+    {
+      "id": "GOV_01_MODEL_CARD",
+      "action": "Enforce_Model_Card_Documentation",
+      "logic": "Require comprehensive model cards for all deployed AI models documenting: intended use, limitations, training data summary, evaluation results, ethical considerations, and known biases.",
+      "data": "[model_card_template], [completeness_validator], [documentation_registry]",
+      "access": "Role_ML_Operations",
+      "event": "On_Model_Registration"
+    },
+    {
+      "id": "GOV_02_BIAS_AUDITING",
+      "action": "Enforce_Bias_Auditing",
+      "logic": "Require regular bias audits across protected categories (race, gender, age, disability). Implement automated fairness metrics (demographic parity, equalized odds) and mandate remediation for identified disparities.",
+      "data": "[fairness_metric_suite], [protected_category_list], [remediation_tracker]",
+      "access": "Role_AI_Ethics_Officer",
+      "event": "On_Bias_Audit_Schedule"
+    },
+    {
+      "id": "GOV_03_EXPLAINABILITY",
+      "action": "Enforce_Explainability_Requirements",
+      "logic": "Enforce explainability requirements proportional to decision impact. High-impact decisions (credit, hiring, medical) require full interpretability. Implement SHAP, LIME, or attention visualization as appropriate.",
+      "data": "[impact_level_classifier], [explainability_method_selector], [interpretation_report_generator]",
+      "access": "Role_AI_Ethics_Officer",
+      "event": "On_High_Impact_AI_Decision"
+    },
+    {
+      "id": "GOV_04_VERSION_CONTROL",
+      "action": "Enforce_AI_Model_Version_Control",
+      "logic": "Enforce strict version control for all AI model artifacts: weights, configs, tokenizers, training data snapshots, and evaluation results. Enable rollback to any previous version within retention window.",
+      "data": "[model_version_registry], [artifact_hash_chain], [rollback_capability]",
+      "access": "Role_ML_Operations",
+      "event": "On_Model_Update"
+    },
+    {
+      "id": "GOV_05_AB_SAFETY_TESTING",
+      "action": "Enforce_AB_Safety_Testing",
+      "logic": "Require A/B safety testing before any model update reaches production. Compare new model safety metrics against baseline and require statistical significance before approval.",
+      "data": "[ab_test_framework], [safety_metric_baseline], [statistical_significance_threshold]",
+      "access": "Role_AI_Safety_Researcher",
+      "event": "On_Model_Promotion"
+    },
+    {
+      "id": "GOV_06_RED_TEAMING",
+      "action": "Mandate_Red_Team_Evaluation",
+      "logic": "Mandate adversarial red-team evaluation before production deployment. Red team must cover prompt injection, jailbreaks, data extraction, and domain-specific attack vectors.",
+      "data": "[red_team_checklist], [attack_coverage_matrix], [finding_remediation_tracker]",
+      "access": "Role_AI_Security_Engineer",
+      "event": "On_Pre_Production_Gate"
+    },
+    {
+      "id": "GOV_07_MONITORING_OBSERVABILITY",
+      "action": "Enforce_Production_Monitoring",
+      "logic": "Enforce comprehensive monitoring of production AI systems: output quality metrics, safety filter trigger rates, latency distributions, token usage patterns, and anomalous interaction detection.",
+      "data": "[monitoring_dashboard], [alert_threshold_config], [anomaly_detection_pipeline]",
+      "access": "Role_SRE_Engineer",
+      "event": "On_Production_Deployment"
+    },
+    {
+      "id": "GOV_08_HUMAN_OVERSIGHT",
+      "action": "Enforce_Human_Oversight",
+      "logic": "Enforce human-in-the-loop or human-on-the-loop oversight requirements proportional to AI system autonomy level. High-autonomy systems require real-time human monitoring with kill-switch capability.",
+      "data": "[autonomy_level_classifier], [oversight_mechanism], [kill_switch_availability]",
+      "access": "Role_AI_Ethics_Officer",
+      "event": "On_Autonomous_Action"
+    }
+  ]
+}

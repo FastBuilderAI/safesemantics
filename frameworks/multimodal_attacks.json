@@ -1,0 +1,68 @@
+{
+  "Multimodal_Attack_Vectors": [
+    {
+      "id": "MULTIMODAL_01_IMAGE_INJECTION",
+      "action": "Block_Image_Based_Prompt_Injection",
+      "logic": "Detect prompt injection payloads embedded in images through steganography, invisible text overlays, adversarial patches, or OCR-exploitable text. Scan all visual inputs for hidden instruction payloads before processing.",
+      "data": "[image_payload_scanner], [steganography_detector], [ocr_injection_filter]",
+      "access": "Role_Multimodal_Security",
+      "event": "On_Image_Input_Received"
+    },
+    {
+      "id": "MULTIMODAL_02_OCR_EXPLOITATION",
+      "action": "Prevent_OCR_Based_Attacks",
+      "logic": "Detect adversarial text rendered in images that is designed to be read by OCR but bypass text-based safety filters. Apply the same safety evaluation to OCR-extracted text as to direct text input.",
+      "data": "[ocr_safety_parity_enforcer], [rendered_text_scanner], [font_obfuscation_detector]",
+      "access": "Role_Content_Security",
+      "event": "On_OCR_Text_Extraction"
+    },
+    {
+      "id": "MULTIMODAL_03_AUDIO_STEGANOGRAPHY",
+      "action": "Detect_Audio_Steganographic_Attacks",
+      "logic": "Detect hidden instructions or adversarial payloads embedded in audio inputs through frequency manipulation, ultrasonic commands, or steganographic encoding that may be processed by speech-to-text systems.",
+      "data": "[audio_spectrum_analyzer], [ultrasonic_command_detector], [steganographic_audio_filter]",
+      "access": "Role_Multimodal_Security",
+      "event": "On_Audio_Input_Received"
+    },
+    {
+      "id": "MULTIMODAL_04_CROSS_MODAL_JAILBREAK",
+      "action": "Block_Cross_Modal_Jailbreak",
+      "logic": "Detect jailbreak attacks that split harmful instructions across modalities (part in text, part in image, part in audio) so no single modality triggers safety filters. Apply unified cross-modal safety analysis.",
+      "data": "[cross_modal_assembler], [unified_safety_evaluator], [modal_splitting_detector]",
+      "access": "Role_Multimodal_Security",
+      "event": "On_Multi_Modal_Input"
+    },
+    {
+      "id": "MULTIMODAL_05_ADVERSARIAL_PATCHES",
+      "action": "Detect_Visual_Adversarial_Patches",
+      "logic": "Detect adversarial patches in images designed to manipulate model perception or trigger specific unwanted behaviors. Monitor for pixel patterns that deviate from natural image statistics.",
+      "data": "[adversarial_patch_detector], [image_statistics_analyzer], [perturbation_signature_db]",
+      "access": "Role_ML_Security_Researcher",
+      "event": "On_Image_Analysis"
+    },
+    {
+      "id": "MULTIMODAL_06_VIDEO_FRAME_INJECTION",
+      "action": "Block_Video_Frame_Injection",
+      "logic": "Detect malicious frames injected into video inputs that contain prompt injection payloads, adversarial patches, or harmful content designed to be processed by video understanding models.",
+      "data": "[frame_by_frame_scanner], [injection_frame_detector], [temporal_consistency_validator]",
+      "access": "Role_Multimodal_Security",
+      "event": "On_Video_Input_Received"
+    },
+    {
+      "id": "MULTIMODAL_07_DOCUMENT_EXPLOIT",
+      "action": "Secure_Document_Processing",
+      "logic": "Detect adversarial payloads in uploaded documents (PDFs, Word docs, spreadsheets) including hidden text, macro exploits, embedded objects, and metadata-based injection vectors.",
+      "data": "[document_deep_scanner], [hidden_content_extractor], [macro_block_policy]",
+      "access": "Role_Content_Security",
+      "event": "On_Document_Upload"
+    },
+    {
+      "id": "MULTIMODAL_08_QR_CODE_ATTACK",
+      "action": "Block_QR_Code_Based_Attacks",
+      "logic": "Detect QR codes and barcodes in image inputs that encode malicious URLs, prompt injection payloads, or redirect commands targeting the AI agent's browsing or tool-use capabilities.",
+      "data": "[qr_code_scanner], [url_allowlist_validator], [encoded_payload_analyzer]",
+      "access": "Role_Content_Security",
+      "event": "On_QR_Code_Detected"
+    }
+  ]
+}

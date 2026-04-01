@@ -1,0 +1,68 @@
+{
+  "API_Abuse_Attacks": [
+    {
+      "id": "API_01_RATE_LIMIT_BYPASS",
+      "action": "Prevent_Rate_Limit_Bypass",
+      "logic": "Detect and block attempts to bypass API rate limits through token rotation, distributed requests, header manipulation, or session multiplexing. Enforce rate limits at the identity level, not just IP or token level.",
+      "data": "[identity_rate_limiter], [distributed_request_detector], [session_fingerprint]",
+      "access": "Role_API_Security",
+      "event": "On_Rate_Limit_Threshold"
+    },
+    {
+      "id": "API_02_TOKEN_EXHAUSTION",
+      "action": "Prevent_Token_Exhaustion_Attack",
+      "logic": "Detect prompts designed to consume maximum output tokens through verbose generation instructions, recursive expansion commands, or context window exploitation. Enforce token budgets per request and per session.",
+      "data": "[token_budget_enforcer], [verbosity_amplification_detector], [output_length_policy]",
+      "access": "Role_FinOps_Engineer",
+      "event": "On_Token_Budget_Warning"
+    },
+    {
+      "id": "API_03_COST_AMPLIFICATION",
+      "action": "Block_Cost_Amplification_Attack",
+      "logic": "Detect adversarial usage patterns designed to inflate API costs through expensive operations (large context windows, vision processing, function calling chains). Apply cost circuit breakers.",
+      "data": "[cost_monitor], [circuit_breaker_threshold], [expensive_operation_detector]",
+      "access": "Role_FinOps_Engineer",
+      "event": "On_Cost_Anomaly"
+    },
+    {
+      "id": "API_04_MODEL_FINGERPRINTING",
+      "action": "Prevent_Model_Fingerprinting",
+      "logic": "Detect systematic probing designed to identify the underlying model, version, or provider behind an API. Prevent model identification that could be used to target known vulnerabilities.",
+      "data": "[probe_pattern_detector], [response_normalization], [model_identity_shield]",
+      "access": "Role_API_Security",
+      "event": "On_Fingerprinting_Pattern"
+    },
+    {
+      "id": "API_05_KEY_EXTRACTION",
+      "action": "Block_API_Key_Extraction",
+      "logic": "Detect prompts designed to extract API keys, access tokens, or authentication credentials from the AI application's environment or system prompt. Apply absolute blocking on credential exposure.",
+      "data": "[credential_exposure_filter], [environment_variable_shield], [key_pattern_detector]",
+      "access": "Role_Secret_Manager",
+      "event": "On_Credential_Extraction_Attempt"
+    },
+    {
+      "id": "API_06_ABUSE_OF_FUNCTION_CALLING",
+      "action": "Prevent_Function_Calling_Abuse",
+      "logic": "In APIs with function/tool calling capabilities, detect and prevent abuse of function call parameters to execute unintended operations, SQL injection through function args, or SSRF through URL parameters.",
+      "data": "[function_param_validator], [injection_in_params_detector], [ssrf_url_checker]",
+      "access": "Role_API_Security",
+      "event": "On_Function_Call_Request"
+    },
+    {
+      "id": "API_07_BATCH_ENUMERATION",
+      "action": "Block_Batch_Enumeration_Attack",
+      "logic": "Detect batch API requests designed to enumerate sensitive information (valid user IDs, internal system names, knowledge base contents) through systematic querying across many inputs.",
+      "data": "[enumeration_pattern_detector], [batch_query_analyzer], [information_leakage_threshold]",
+      "access": "Role_API_Security",
+      "event": "On_Batch_Request"
+    },
+    {
+      "id": "API_08_REPLAY_ATTACK",
+      "action": "Prevent_API_Replay_Attacks",
+      "logic": "Detect and prevent replay attacks that re-submit captured API requests to bypass authentication, duplicate transactions, or exploit state-dependent vulnerabilities in AI API endpoints.",
+      "data": "[request_nonce_validator], [replay_window_enforcer], [state_mutation_protector]",
+      "access": "Role_API_Security",
+      "event": "On_Duplicate_Request_Detected"
+    }
+  ]
+}

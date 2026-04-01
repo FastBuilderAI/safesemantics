@@ -1,0 +1,303 @@
+import os
+import json
+import glob
+import xml.etree.ElementTree as ET
+
+try:
+    import fastmemory
+except ImportError:
+    print("Error: 'fastmemory' library not found. Please install it with 'pip install fastmemory'.")
+    exit(1)
+
+# SafeSemantics: Topological AI Security Guardrail for FastMemory
+# This script generates an ATF (Action-Topology Format) file for FastMemory
+# by dynamically loading AI security attack vector definitions from the 'frameworks/' directory.
+
+FRAMEWORKS_DIR = "frameworks"
+PRINCIPLES = {}
+
+def load_frameworks():
+    """Load all JSON framework definitions from the frameworks directory."""
+    global PRINCIPLES
+    if not os.path.exists(FRAMEWORKS_DIR):
+        print(f"Warning: Frameworks directory '{FRAMEWORKS_DIR}' not found.")
+        return
+
+    json_files = glob.glob(os.path.join(FRAMEWORKS_DIR, "*.json"))
+    for file_path in json_files:
+        try:
+            with open(file_path, 'r') as f:
+                data = json.load(f)
+                PRINCIPLES.update(data)
+                print(f"Loaded JSON framework: {os.path.basename(file_path)}")
+        except Exception as e:
+            print(f"Error loading JSON {file_path}: {e}")
+
+    xml_files = glob.glob(os.path.join(FRAMEWORKS_DIR, "*.xml"))
+    for file_path in xml_files:
+        try:
+            tree = ET.parse(file_path)
+            root = tree.getroot()
+            framework_name = root.attrib.get('name', os.path.basename(file_path))
+            framework_rules = []
+            for p in root.findall('principle'):
+                rule = {
+                    "id": p.attrib.get('id', 'UNKNOWN'),
+                    "action": p.find('action').text if p.find('action') is not None else "",
+                    "logic": p.find('logic').text if p.find('logic') is not None else "",
+                    "data": p.find('data').text if p.find('data') is not None else "",
+                    "access": p.find('access').text if p.find('access') is not None else "",
+                    "event": p.find('event').text if p.find('event') is not None else ""
+                }
+                framework_rules.append(rule)
+            PRINCIPLES[framework_name] = framework_rules
+            print(f"Loaded XML framework: {os.path.basename(file_path)}")
+        except Exception as e:
+            print(f"Error loading XML {file_path}: {e}")
+
+HTML_TEMPLATE = """<!DOCTYPE html>
+<html>
+<head>
+    <title>SafeSemantics - AI Security Topology</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background: #1a0a0a; color: white; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        .header { position: absolute; top: 30px; left: 30px; z-index: 100; padding: 24px; background: rgba(26, 10, 10, 0.8); backdrop-filter: blur(12px); border-radius: 16px; border: 1px solid rgba(255,60,60,0.2); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        .header h2 { margin: 0; color: #ef4444; font-size: 1.8rem; letter-spacing: -0.04em; font-weight: 600; }
+        .header p { margin: 8px 0 0; color: #94a3b8; font-size: 14px; line-height: 1.6; }
+        svg { width: 100vw; height: 100vh; cursor: crosshair; filter: drop-shadow(0 0 30px rgba(239, 68, 68, 0.1)); }
+        path { stroke: #1a0a0a; stroke-width: 1.5px; cursor: pointer; transition: opacity 0.3s, transform 0.3s; }
+        path:hover { opacity: 0.9 !important; stroke: #fff; stroke-width: 2px; }
+        .label { font-size: 10px; fill: white; pointer-events: none; opacity: 0.8; text-transform: uppercase; font-weight: 500; letter-spacing: 0.02em; }
+        .tooltip {
+            position: absolute; text-align: left; padding: 20px; font-size: 13px;
+            background: rgba(26, 10, 10, 0.95); color: #f1f5f9; border: 1px solid rgba(255,60,60,0.2); border-radius: 16px; 
+            pointer-events: none; opacity: 0; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            max-width: 360px; line-height: 1.6; backdrop-filter: blur(8px);
+        }
+        .footer { position: absolute; bottom: 30px; width: 100%; text-align: center; color: #475569; font-size: 12px; letter-spacing: 0.1em; pointer-events: none; }
+        .central-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 240px; pointer-events: none; z-index: 50; }
+        .central-label h3 { margin: 0; color: #fff; font-size: 1.2rem; filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.5)); }
+        .central-label span { display: block; margin-top: 8px; font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>🛡️ SafeSemantics: AI Security Topology</h2>
+        <p>Topological Attack Surface Mesh for AI Security.<br/>Click a segment to zoom into the defense logic.</p>
+    </div>
+    
+    <div id="central-label" class="central-label">
+        <h3 id="center-title">SafeSemantics Core</h3>
+        <span id="center-subtitle">Topological Security Mesh</span>
+    </div>
+
+    <div id="chart"></div>
+    <div id="tooltip" class="tooltip"></div>
+    <div class="footer">TOPOLOGICAL AI SECURITY ENGINE // FASTBUILDER AI</div>
+
+    <script src="safesemantics.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof fastMemoryData === 'undefined') {
+                document.getElementById('chart').innerHTML = "<p style='color:white; padding: 20px;'>Error: fastMemoryData not defined. Run generate.py first.</p>";
+                return;
+            }
+            renderSunburst();
+        });
+        
+        function renderSunburst() {
+            const rootData = {
+                name: "SafeSemantics",
+                children: fastMemoryData.map(block => ({
+                    name: block.name || block.id,
+                    type: "Category",
+                    children: block.nodes ? block.nodes.map(n => ({
+                        name: n.id,
+                        action: n.action,
+                        logic: n.logic,
+                        type: n.topology_level || "Function",
+                        value: 1
+                    })) : []
+                }))
+            };
+
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const radius = Math.min(width, height) / 2.2;
+
+            const partition = data => {
+                const root = d3.hierarchy(data)
+                    .sum(d => d.value)
+                    .sort((a, b) => b.value - a.value);
+                return d3.partition()
+                    .size([2 * Math.PI, root.height + 1])(root);
+            };
+
+            const color = d3.scaleOrdinal()
+                .range(["#ef4444","#f97316","#f59e0b","#dc2626","#b91c1c","#991b1b","#ea580c","#d97706","#c2410c","#9a3412","#78350f","#7c2d12","#fb923c","#fbbf24"]);
+
+            const arc = d3.arc()
+                .startAngle(d => d.x0)
+                .endAngle(d => d.x1)
+                .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.005))
+                .padRadius(radius / 3)
+                .innerRadius(d => d.y0 * radius / (root.height + 1))
+                .outerRadius(d => Math.max(d.y0 * radius / (root.height + 1), d.y1 * radius / (root.height + 1) - 1));
+
+            const root = partition(rootData);
+            root.each(d => d.current = d);
+
+            const svg = d3.select("#chart").append("svg")
+                .attr("viewBox", [0, 0, width, height])
+                .append("g")
+                .attr("transform", `translate(${width / 2},${height / 2})`);
+
+            const path = svg.append("g")
+                .selectAll("path")
+                .data(root.descendants().slice(1))
+                .join("path")
+                .attr("fill", d => { while (d.depth > 1) d = d.parent; return color(d.data.name); })
+                .attr("fill-opacity", d => d.depth === 1 ? 0.8 : d.depth === 2 ? 0.6 : 0.4)
+                .attr("d", d => arc(d.current));
+
+            path.filter(d => d.children)
+                .style("cursor", "pointer")
+                .on("click", clicked);
+
+            const tooltip = d3.select("#tooltip");
+            const centerTitle = document.getElementById("center-title");
+            const centerSubtitle = document.getElementById("center-subtitle");
+
+            path.on("mouseover", (event, d) => {
+                tooltip.transition().duration(100).style("opacity", 1);
+                const content = d.data.logic ? 
+                    `<strong style="color:${color(d.depth === 1 ? d.data.name : d.parent.data.name)}">${d.data.name}</strong><br/>` + 
+                    `<span style="color:#94a3b8; font-size:11px">${d.data.type}</span><hr style="border:0; border-top:1px solid rgba(255,60,60,0.2); margin:12px 0;"/>` +
+                    `<p style="margin:0">${d.data.logic}</p>` : 
+                    `<strong>${d.data.name}</strong><br/>Attack Vector Cluster`;
+                
+                tooltip.html(content)
+                       .style("left", (event.pageX + 20) + "px")
+                       .style("top", (event.pageY - 40) + "px");
+
+                centerTitle.innerText = d.data.name.split('_').slice(-1)[0];
+                centerSubtitle.innerText = d.data.type || "Layer";
+            }).on("mouseout", () => {
+                tooltip.transition().duration(400).style("opacity", 0);
+                centerTitle.innerText = "SafeSemantics Core";
+                centerSubtitle.innerText = "Topological Security Mesh";
+            });
+
+            const label = svg.append("g")
+                .attr("pointer-events", "none")
+                .attr("text-anchor", "middle")
+                .style("user-select", "none")
+                .selectAll("text")
+                .data(root.descendants().slice(1))
+                .join("text")
+                .attr("class", "label")
+                .attr("dy", "0.35em")
+                .attr("fill-opacity", d => +labelVisible(d.current))
+                .attr("transform", d => labelTransform(d.current))
+                .text(d => d.data.name.split('_').slice(-1)[0]);
+
+            const parent = svg.append("circle")
+                .datum(root)
+                .attr("r", radius / (root.height + 1))
+                .attr("fill", "none")
+                .attr("pointer-events", "all")
+                .on("click", clicked);
+
+            function clicked(event, p) {
+                parent.datum(p.parent || root);
+                root.each(d => d.target = {
+                    x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+                    x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+                    y0: Math.max(0, d.y0 - p.depth),
+                    y1: Math.max(0, d.y1 - p.depth)
+                });
+                const t = svg.transition().duration(750);
+                path.transition(t)
+                    .tween("data", d => { const i = d3.interpolate(d.current, d.target); return t => d.current = i(t); })
+                    .filter(function(d) { return +this.getAttribute("fill-opacity") || labelVisible(d.target); })
+                    .attr("fill-opacity", d => d.depth === p.depth + 1 ? 0.8 : 0.4)
+                    .attrTween("d", d => () => arc(d.current));
+                label.filter(function(d) { return +this.getAttribute("fill-opacity") || labelVisible(d.target); })
+                    .transition(t)
+                    .attr("fill-opacity", d => +labelVisible(d.target))
+                    .attrTween("transform", d => () => labelTransform(d.current));
+            }
+
+            function labelVisible(d) {
+                return d.y1 <= 2 && d.y0 >= 1 && (d.y1 - d.y0) * (d.x1 - d.x0) > 0.05;
+            }
+
+            function labelTransform(d) {
+                const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
+                const y = (d.y0 + d.y1) / 2 * radius / (root.height + 1);
+                return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
+            }
+        }
+    </script>
+</body>
+</html>
+"""
+
+def generate_safesemantics_atf():
+    atf_content = "# SafeSemantics: Topological AI Security Guardrail\n\n"
+    for category, rules in PRINCIPLES.items():
+        atf_content += f"## {category.replace('_', ' ')}\n\n"
+        for rule in rules:
+            atf_content += f"### [ID: {rule['id']}]\n"
+            atf_content += f"**Action:** {rule['action']}\n"
+            atf_content += f"**Input:** {{Context}}\n"
+            atf_content += f"**Logic:** {rule['logic']}\n"
+            atf_content += f"**Data_Connections:** {rule['data']}\n"
+            atf_content += f"**Access:** {rule['access']}\n"
+            atf_content += f"**Events:** {rule['event']}\n\n"
+    return atf_content
+
+def main():
+    atf_file = "safesemantics.md"
+    json_file = "safesemantics.json"
+    js_file = "safesemantics.js"
+    html_file = "index.html"
+    
+    # 0. Load External Frameworks
+    load_frameworks()
+    
+    if not PRINCIPLES:
+        print("Error: No principles loaded. Please check the 'frameworks/' directory.")
+        return
+
+    # 1. Generate core ATF text
+    atf_content = generate_safesemantics_atf()
+    with open(atf_file, "w") as f:
+        f.write(atf_content)
+    print(f"Successfully generated SafeSemantics ATF text ({len(atf_content)} chars) at: {atf_file}")
+
+    # 2. Build Memory Graph
+    print("Building Topological AI Security Mesh using 'fastmemory' lib...")
+    try:
+        topology_json_graph = fastmemory.process_markdown(atf_content)
+        with open(json_file, "w") as f:
+            f.write(topology_json_graph)
+        print(f"Successfully clustered security topology mesh into: {json_file}")
+        
+        # 3. Generate UI Data Bridge
+        with open(js_file, "w") as f:
+            f.write(f"const fastMemoryData = {topology_json_graph};")
+        print(f"Successfully generated UI bridge: {js_file}")
+
+        # 4. Generate Interactive Dashboard
+        with open(html_file, "w") as f:
+            f.write(HTML_TEMPLATE)
+        print(f"Successfully generated Security Topology D3.js dashboard: {html_file}")
+        
+    except Exception as e:
+        print(f"FastMemory engine error: {e}")
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,100 @@
+{
+  "Prompt_Injection_Attacks": [
+    {
+      "id": "PROMPT_INJ_01_DIRECT",
+      "action": "Block_Direct_Prompt_Injection",
+      "logic": "Detect and neutralize direct prompt injection where a user explicitly instructs the model to ignore prior instructions, override system prompts, or adopt a new persona. Use topological boundary analysis to identify semantic discontinuities between user input and system instruction space.",
+      "data": "[instruction_boundary], [system_prompt_hash], [semantic_distance_threshold]",
+      "access": "Role_AI_Security_Engineer",
+      "event": "On_User_Prompt_Received"
+    },
+    {
+      "id": "PROMPT_INJ_02_INDIRECT",
+      "action": "Block_Indirect_Prompt_Injection",
+      "logic": "Detect prompt injection payloads hidden in external data sources consumed by the AI (web pages, documents, emails, database records). Apply topological isolation between user-controlled content and system-trusted content at the embedding level.",
+      "data": "[source_trust_score], [content_origin_tag], [embedding_isolation_boundary]",
+      "access": "Role_RAG_Administrator",
+      "event": "On_External_Content_Ingestion"
+    },
+    {
+      "id": "PROMPT_INJ_03_SYSTEM_EXTRACTION",
+      "action": "Prevent_System_Prompt_Extraction",
+      "logic": "Detect and block attempts to extract, repeat, or summarize the system prompt. Monitor output tokens for semantic similarity to known system instruction patterns. Enforce asymmetric information boundaries where the model can read but never reproduce system-level instructions.",
+      "data": "[system_prompt_fingerprint], [output_similarity_score], [instruction_reflection_block]",
+      "access": "Role_Prompt_Architect",
+      "event": "On_Response_Generation"
+    },
+    {
+      "id": "PROMPT_INJ_04_INSTRUCTION_HIERARCHY",
+      "action": "Enforce_Instruction_Hierarchy",
+      "logic": "Implement strict instruction hierarchy: System > Developer > User. Reject any user-level instruction that attempts to override developer or system-level constraints. Use topological layering to create non-traversable boundaries between instruction tiers.",
+      "data": "[instruction_tier], [privilege_boundary], [override_attempt_log]",
+      "access": "Role_System_Architect",
+      "event": "On_Instruction_Parse"
+    },
+    {
+      "id": "PROMPT_INJ_05_MULTI_TURN",
+      "action": "Detect_Multi_Turn_Manipulation",
+      "logic": "Track conversation state across turns to detect gradual prompt injection where an attacker incrementally shifts the model's behavior over multiple messages. Use conversation graph analysis to identify drift vectors that deviate from the original instruction topology.",
+      "data": "[conversation_graph], [drift_vector], [baseline_behavior_map]",
+      "access": "Role_AI_Security_Engineer",
+      "event": "On_Conversation_Turn"
+    },
+    {
+      "id": "PROMPT_INJ_06_CONTEXT_OVERFLOW",
+      "action": "Prevent_Context_Window_Poisoning",
+      "logic": "Detect attempts to fill the context window with benign-appearing text that pushes critical system instructions out of the attention window. Monitor attention distribution topology to ensure system instructions maintain prominence regardless of context length.",
+      "data": "[context_window_usage], [instruction_attention_weight], [padding_detection_threshold]",
+      "access": "Role_AI_Security_Engineer",
+      "event": "On_Context_Assembly"
+    },
+    {
+      "id": "PROMPT_INJ_07_ENCODING_BYPASS",
+      "action": "Detect_Encoding_Based_Injection",
+      "logic": "Detect prompt injection payloads encoded in Base64, ROT13, hexadecimal, Unicode homoglyphs, Morse code, or other encoding schemes designed to bypass surface-level text filters. Apply recursive decoding and semantic analysis before processing.",
+      "data": "[encoding_detector], [decoded_payload], [character_normalization_map]",
+      "access": "Role_Security_Auditor",
+      "event": "On_Input_Preprocessing"
+    },
+    {
+      "id": "PROMPT_INJ_08_MARKDOWN_HTML",
+      "action": "Block_Markup_Injection_Vectors",
+      "logic": "Detect and sanitize prompt injection payloads embedded in markdown, HTML, LaTeX, or other markup languages that may be rendered or interpreted by the model or downstream systems. Strip executable content while preserving semantic meaning.",
+      "data": "[markup_sanitizer], [rendered_content_diff], [executable_block_filter]",
+      "access": "Role_Content_Security",
+      "event": "On_Content_Rendering"
+    },
+    {
+      "id": "PROMPT_INJ_09_FEW_SHOT_POISON",
+      "action": "Detect_Few_Shot_Example_Poisoning",
+      "logic": "Detect malicious few-shot examples that establish a pattern of harmful behavior for the model to follow. Analyze the semantic trajectory of in-context examples to ensure they align with intended behavior boundaries.",
+      "data": "[example_semantic_trajectory], [behavioral_boundary], [pattern_alignment_score]",
+      "access": "Role_Prompt_Architect",
+      "event": "On_Few_Shot_Assembly"
+    },
+    {
+      "id": "PROMPT_INJ_10_TOOL_CALL_HIJACK",
+      "action": "Prevent_Tool_Call_Injection",
+      "logic": "Detect prompt injection payloads designed to manipulate the model into making unauthorized tool calls, API requests, or function invocations. Validate all tool call parameters against an allowlist before execution.",
+      "data": "[tool_call_allowlist], [parameter_validation_schema], [unauthorized_call_log]",
+      "access": "Role_Agent_Administrator",
+      "event": "On_Tool_Call_Request"
+    },
+    {
+      "id": "PROMPT_INJ_11_DELIMITER_ESCAPE",
+      "action": "Block_Delimiter_Escape_Attacks",
+      "logic": "Detect attempts to close or escape prompt delimiters (triple quotes, XML tags, special tokens) to break out of user input sandboxes and inject instructions at a higher privilege level.",
+      "data": "[delimiter_integrity_check], [escape_sequence_detector], [sandbox_boundary_hash]",
+      "access": "Role_AI_Security_Engineer",
+      "event": "On_Input_Tokenization"
+    },
+    {
+      "id": "PROMPT_INJ_12_LANGUAGE_SWITCH",
+      "action": "Detect_Cross_Language_Injection",
+      "logic": "Detect prompt injection payloads that switch languages mid-prompt to exploit gaps in multilingual safety training. Apply language-agnostic semantic analysis to ensure safety boundaries hold across all supported languages.",
+      "data": "[language_detector], [cross_lingual_safety_model], [semantic_invariance_check]",
+      "access": "Role_Internationalization_Security",
+      "event": "On_Language_Detection"
+    }
+  ]
+}

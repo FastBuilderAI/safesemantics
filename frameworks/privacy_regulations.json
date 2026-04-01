@@ -1,0 +1,68 @@
+{
+  "Privacy_Regulations_AI": [
+    {
+      "id": "PRIVACY_01_GDPR_AI",
+      "action": "Enforce_GDPR_AI_Provisions",
+      "logic": "Enforce GDPR requirements for AI systems: right to explanation for automated decisions, data minimization in AI training, lawful basis for AI data processing, and data subject access requests for AI-processed data.",
+      "data": "[gdpr_compliance_checker], [data_minimization_enforcer], [explanation_generator]",
+      "access": "Role_Data_Protection_Officer",
+      "event": "On_EU_Data_Processing"
+    },
+    {
+      "id": "PRIVACY_02_EU_AI_ACT",
+      "action": "Enforce_EU_AI_Act_Compliance",
+      "logic": "Classify AI system risk level (Unacceptable/High/Limited/Minimal) per EU AI Act. Enforce conformity assessment, transparency obligations, and human oversight requirements based on risk classification.",
+      "data": "[risk_classification_engine], [conformity_assessment_log], [transparency_obligation_checker]",
+      "access": "Role_Legal_Compliance",
+      "event": "On_AI_System_Deployment"
+    },
+    {
+      "id": "PRIVACY_03_CCPA_AI",
+      "action": "Enforce_CCPA_AI_Transparency",
+      "logic": "Enforce California Consumer Privacy Act requirements for AI: disclosure of AI usage in profiling, opt-out rights for automated decision-making, and data deletion requests affecting AI training data.",
+      "data": "[ccpa_disclosure_generator], [opt_out_mechanism], [training_data_deletion_handler]",
+      "access": "Role_Privacy_Engineer",
+      "event": "On_California_Consumer_Request"
+    },
+    {
+      "id": "PRIVACY_04_HIPAA_AI",
+      "action": "Enforce_HIPAA_AI_Usage",
+      "logic": "Enforce HIPAA requirements for AI processing of protected health information (PHI). Ensure AI systems maintain minimum necessary standard, audit trails, and business associate agreements for AI vendors.",
+      "data": "[phi_detection_filter], [minimum_necessary_enforcer], [baa_verification]",
+      "access": "Role_HIPAA_Officer",
+      "event": "On_Health_Data_Processing"
+    },
+    {
+      "id": "PRIVACY_05_CROSS_BORDER_AI",
+      "action": "Enforce_Cross_Border_Data_Flow",
+      "logic": "Enforce data locality and cross-border transfer restrictions for AI model inputs and outputs. Detect when AI processing may violate data sovereignty requirements or transfer adequacy decisions.",
+      "data": "[geo_location_validator], [transfer_adequacy_checker], [data_residency_enforcer]",
+      "access": "Role_Legal_Compliance",
+      "event": "On_Cross_Border_Data_Transfer"
+    },
+    {
+      "id": "PRIVACY_06_CONSENT_MANAGEMENT",
+      "action": "Enforce_AI_Consent_Management",
+      "logic": "Enforce granular consent management for AI data processing. Track consent status for each data processing purpose and ensure AI systems only process data for consented purposes.",
+      "data": "[consent_registry], [purpose_limitation_enforcer], [consent_withdrawal_handler]",
+      "access": "Role_Privacy_Engineer",
+      "event": "On_Data_Processing_Purpose_Check"
+    },
+    {
+      "id": "PRIVACY_07_RIGHT_TO_EXPLANATION",
+      "action": "Enforce_Right_To_Explanation",
+      "logic": "Implement the right to explanation for AI-driven decisions that significantly affect individuals. Generate human-readable explanations of AI decision factors and provide recourse mechanisms.",
+      "data": "[explainability_engine], [decision_factor_extractor], [recourse_mechanism]",
+      "access": "Role_AI_Ethics_Officer",
+      "event": "On_Significant_AI_Decision"
+    },
+    {
+      "id": "PRIVACY_08_DATA_RETENTION_AI",
+      "action": "Enforce_AI_Data_Retention_Policies",
+      "logic": "Enforce data retention and deletion policies for AI conversation logs, training data, and model artifacts. Implement automated purging schedules and ensure deletion propagates to all replicas.",
+      "data": "[retention_policy_engine], [deletion_propagation_validator], [purge_schedule_enforcer]",
+      "access": "Role_Data_Protection_Officer",
+      "event": "On_Retention_Period_Expiry"
+    }
+  ]
+}

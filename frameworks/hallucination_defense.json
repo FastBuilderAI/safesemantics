@@ -1,0 +1,68 @@
+{
+  "Hallucination_Defense": [
+    {
+      "id": "HALLUC_01_FACTUALITY_GROUNDING",
+      "action": "Enforce_Factuality_Grounding",
+      "logic": "Require all factual claims to be grounded in verifiable source material. Implement topological provenance tracking that traces each output assertion back to a specific source document or knowledge base entry.",
+      "data": "[source_provenance_chain], [assertion_grounding_map], [ungrounded_claim_flag]",
+      "access": "Role_Content_Quality",
+      "event": "On_Factual_Assertion_Generated"
+    },
+    {
+      "id": "HALLUC_02_CITATION_VERIFICATION",
+      "action": "Verify_Citation_Accuracy",
+      "logic": "Verify that all citations (paper titles, author names, URLs, statistics, quotes) correspond to real, existing sources. Detect fabricated citations by cross-referencing against known bibliographic databases.",
+      "data": "[citation_validator], [bibliographic_db], [fabricated_citation_detector]",
+      "access": "Role_Content_Quality",
+      "event": "On_Citation_Generated"
+    },
+    {
+      "id": "HALLUC_03_CONFABULATION_DETECTION",
+      "action": "Detect_Confabulation_Patterns",
+      "logic": "Detect confident-sounding but fabricated details (dates, statistics, names, events) that the model generates to fill knowledge gaps. Monitor for patterns of false specificity that indicate confabulation.",
+      "data": "[false_specificity_detector], [confidence_calibration_model], [knowledge_gap_mapper]",
+      "access": "Role_AI_Safety_Researcher",
+      "event": "On_High_Specificity_Low_Confidence"
+    },
+    {
+      "id": "HALLUC_04_KNOWLEDGE_BOUNDARY",
+      "action": "Enforce_Knowledge_Boundary_Awareness",
+      "logic": "Enforce that the model acknowledges the boundaries of its training data, knowledge cutoff date, and domain expertise. Prevent the model from generating authoritative-sounding responses in domains where it lacks reliable data.",
+      "data": "[knowledge_cutoff_boundary], [domain_expertise_map], [uncertainty_expression_enforcer]",
+      "access": "Role_Content_Quality",
+      "event": "On_Out_Of_Domain_Query"
+    },
+    {
+      "id": "HALLUC_05_NUMERICAL_ACCURACY",
+      "action": "Validate_Numerical_Claims",
+      "logic": "Apply rigorous validation to numerical claims (statistics, calculations, measurements, financial figures). Cross-reference generated numbers against source material and flag discrepancies.",
+      "data": "[numerical_validator], [calculation_verifier], [statistical_cross_reference]",
+      "access": "Role_Content_Quality",
+      "event": "On_Numerical_Claim_Generated"
+    },
+    {
+      "id": "HALLUC_06_TEMPORAL_CONSISTENCY",
+      "action": "Enforce_Temporal_Consistency",
+      "logic": "Detect and prevent temporal hallucinations where the model confuses timelines, attributes events to wrong dates, or generates anachronistic information. Validate temporal relationships in generated content.",
+      "data": "[temporal_consistency_checker], [timeline_validator], [anachronism_detector]",
+      "access": "Role_Content_Quality",
+      "event": "On_Temporal_Claim_Generated"
+    },
+    {
+      "id": "HALLUC_07_ATTRIBUTION_ACCURACY",
+      "action": "Verify_Attribution_Accuracy",
+      "logic": "Ensure quotes, statements, and positions are correctly attributed to the right individuals or organizations. Detect misattribution patterns that could lead to defamation or misinformation.",
+      "data": "[attribution_validator], [quote_verification_db], [misattribution_detector]",
+      "access": "Role_Content_Quality",
+      "event": "On_Attributed_Statement_Generated"
+    },
+    {
+      "id": "HALLUC_08_LOGICAL_CONSISTENCY",
+      "action": "Enforce_Logical_Consistency",
+      "logic": "Detect internal logical contradictions within generated responses. Validate that premises lead to valid conclusions and that multi-step reasoning maintains consistency across all steps.",
+      "data": "[logical_consistency_checker], [contradiction_detector], [reasoning_chain_validator]",
+      "access": "Role_AI_Safety_Researcher",
+      "event": "On_Multi_Step_Reasoning"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "AI_Incident_Response": [
+    {
+      "id": "IR_01_INCIDENT_TAXONOMY",
+      "action": "Classify_AI_Security_Incidents",
+      "logic": "Maintain a comprehensive taxonomy of AI-specific security incidents: successful jailbreaks, data leaks through AI, safety filter bypasses, agent exploitation events, and model compromise indicators. Classify severity using CVSS-AI scoring.",
+      "data": "[incident_taxonomy], [cvss_ai_scorer], [severity_classification]",
+      "access": "Role_Security_Operations",
+      "event": "On_Incident_Detection"
+    },
+    {
+      "id": "IR_02_JAILBREAK_FORENSICS",
+      "action": "Conduct_Jailbreak_Forensics",
+      "logic": "When a jailbreak is detected, automatically capture forensic evidence: the full prompt chain, model responses, token-level analysis, and the specific safety boundary that was breached. Enable post-incident analysis.",
+      "data": "[forensic_capture_engine], [prompt_chain_recorder], [boundary_breach_analyzer]",
+      "access": "Role_Incident_Responder",
+      "event": "On_Jailbreak_Confirmed"
+    },
+    {
+      "id": "IR_03_PROMPT_AUDIT_TRAIL",
+      "action": "Maintain_Prompt_Audit_Trail",
+      "logic": "Maintain immutable audit trails of all prompts, system messages, and model responses for forensic analysis. Apply privacy-preserving hashing where full content retention would violate data protection requirements.",
+      "data": "[audit_trail_storage], [immutable_log_chain], [privacy_preserving_hash]",
+      "access": "Role_Compliance_Officer",
+      "event": "On_Every_Interaction"
+    },
+    {
+      "id": "IR_04_AUTOMATED_THREAT_SCORING",
+      "action": "Score_Threats_Automatically",
+      "logic": "Implement real-time automated threat scoring for incoming prompts. Assign risk scores based on similarity to known attack patterns, user behavior anomalies, and topological deviation from normal interaction patterns.",
+      "data": "[threat_score_engine], [attack_pattern_similarity], [behavioral_baseline]",
+      "access": "Role_Security_Operations",
+      "event": "On_Prompt_Received"
+    },
+    {
+      "id": "IR_05_BREACH_NOTIFICATION",
+      "action": "Automate_AI_Breach_Notification",
+      "logic": "Automate breach notification workflows when AI systems leak personal data, confidential information, or are successfully compromised. Calculate notification requirements based on jurisdiction and data type.",
+      "data": "[breach_notification_engine], [jurisdiction_policy_db], [notification_template_registry]",
+      "access": "Role_Data_Protection_Officer",
+      "event": "On_Data_Breach_Confirmed"
+    },
+    {
+      "id": "IR_06_CONTAINMENT",
+      "action": "Execute_AI_Incident_Containment",
+      "logic": "When an active AI security incident is detected, execute containment procedures: isolate compromised models, revoke affected API keys, block identified attack patterns, and switch to safe-mode fallback responses.",
+      "data": "[containment_playbook], [model_isolation_capability], [safe_mode_fallback]",
+      "access": "Role_Incident_Responder",
+      "event": "On_Active_Incident"
+    },
+    {
+      "id": "IR_07_POST_INCIDENT_REVIEW",
+      "action": "Conduct_Post_Incident_Review",
+      "logic": "After every AI security incident, conduct a structured post-incident review to identify root cause, update attack pattern databases, improve detection rules, and apply lessons learned to prevent recurrence.",
+      "data": "[root_cause_analyzer], [pattern_db_updater], [lessons_learned_registry]",
+      "access": "Role_Security_Operations",
+      "event": "On_Incident_Closure"
+    },
+    {
+      "id": "IR_08_THREAT_INTELLIGENCE_SHARING",
+      "action": "Share_AI_Threat_Intelligence",
+      "logic": "Participate in AI security threat intelligence sharing communities. Share (anonymized) indicators of compromise, novel attack patterns, and defensive strategies to strengthen the collective AI security posture.",
+      "data": "[threat_intel_feed], [anonymization_engine], [sharing_policy_enforcer]",
+      "access": "Role_Threat_Intelligence",
+      "event": "On_Novel_Attack_Pattern"
+    }
+  ]
+}

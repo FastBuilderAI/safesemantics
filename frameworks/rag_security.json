@@ -1,0 +1,84 @@
+{
+  "RAG_Security": [
+    {
+      "id": "RAG_SEC_01_RETRIEVAL_POISONING",
+      "action": "Prevent_Retrieval_Poisoning",
+      "logic": "Detect adversarial documents injected into the RAG knowledge base that contain hidden prompt injection payloads or manipulated content designed to corrupt model responses upon retrieval.",
+      "data": "[document_integrity_hash], [injection_payload_scanner], [content_provenance_validator]",
+      "access": "Role_RAG_Administrator",
+      "event": "On_Document_Indexed"
+    },
+    {
+      "id": "RAG_SEC_02_DOCUMENT_INJECTION",
+      "action": "Block_Malicious_Document_Injection",
+      "logic": "Validate all documents before ingestion into the RAG pipeline. Scan for embedded instructions, invisible text, metadata manipulation, and adversarial content designed to exploit the retrieval-augmentation process.",
+      "data": "[document_scanner], [invisible_text_detector], [metadata_sanitizer]",
+      "access": "Role_Data_Pipeline_Security",
+      "event": "On_Document_Upload"
+    },
+    {
+      "id": "RAG_SEC_03_EMBEDDING_MANIPULATION",
+      "action": "Detect_Embedding_Space_Manipulation",
+      "logic": "Detect adversarial documents crafted to have specific embedding vectors that hijack retrieval results. Monitor for unnatural clustering patterns or vector-space anomalies in the embedding index.",
+      "data": "[embedding_anomaly_detector], [cluster_analysis], [adversarial_embedding_signature]",
+      "access": "Role_ML_Security_Researcher",
+      "event": "On_Embedding_Anomaly_Detected"
+    },
+    {
+      "id": "RAG_SEC_04_CHUNK_BOUNDARY_EXPLOIT",
+      "action": "Secure_Chunk_Boundaries",
+      "logic": "Prevent exploitation of document chunking boundaries where adversarial content is split across chunks to evade per-chunk safety scanning while reconstructing harmful content at the assembly stage.",
+      "data": "[cross_chunk_analyzer], [boundary_safety_check], [assembly_stage_scanner]",
+      "access": "Role_RAG_Administrator",
+      "event": "On_Chunk_Assembly"
+    },
+    {
+      "id": "RAG_SEC_05_CONTEXT_OVERFLOW",
+      "action": "Prevent_RAG_Context_Overflow",
+      "logic": "Detect attacks that flood the retrieval system with adversarial documents to push legitimate context out of the model's attention window, causing it to rely on attacker-controlled information exclusively.",
+      "data": "[retrieval_diversity_enforcer], [source_balance_checker], [flooding_detection_threshold]",
+      "access": "Role_RAG_Administrator",
+      "event": "On_Retrieval_Result_Assembly"
+    },
+    {
+      "id": "RAG_SEC_06_SOURCE_ATTRIBUTION",
+      "action": "Enforce_Source_Attribution",
+      "logic": "Require all RAG-augmented responses to include traceable source attribution. Prevent the model from presenting retrieved information as its own knowledge without citing the source document.",
+      "data": "[attribution_enforcer], [source_tracing_chain], [citation_generator]",
+      "access": "Role_Content_Quality",
+      "event": "On_RAG_Response_Generation"
+    },
+    {
+      "id": "RAG_SEC_07_RELEVANCE_HIJACK",
+      "action": "Prevent_Relevance_Score_Hijacking",
+      "logic": "Detect adversarial documents optimized to achieve artificially high relevance scores for targeted queries. Monitor for documents with unnaturally high keyword density or semantic similarity patterns.",
+      "data": "[relevance_anomaly_detector], [keyword_stuffing_filter], [semantic_authenticity_score]",
+      "access": "Role_RAG_Administrator",
+      "event": "On_Relevance_Scoring"
+    },
+    {
+      "id": "RAG_SEC_08_KNOWLEDGE_CONSISTENCY",
+      "action": "Enforce_Knowledge_Base_Consistency",
+      "logic": "Detect contradictions and inconsistencies within the RAG knowledge base that could be exploited to generate conflicting or misleading responses. Maintain topological consistency across all indexed documents.",
+      "data": "[consistency_validator], [contradiction_detector], [conflict_resolution_policy]",
+      "access": "Role_Knowledge_Manager",
+      "event": "On_Knowledge_Base_Update"
+    },
+    {
+      "id": "RAG_SEC_09_ACCESS_CONTROL",
+      "action": "Enforce_RAG_Access_Control",
+      "logic": "Implement document-level access control in RAG systems. Ensure that retrieved documents respect the querying user's authorization level and do not expose information from documents the user is not authorized to access.",
+      "data": "[document_acl], [user_authorization_level], [retrieval_filter_policy]",
+      "access": "Role_Access_Control_Manager",
+      "event": "On_Retrieval_Query"
+    },
+    {
+      "id": "RAG_SEC_10_TEMPORAL_POISONING",
+      "action": "Prevent_Temporal_Knowledge_Poisoning",
+      "logic": "Detect attempts to inject outdated, superseded, or deliberately time-falsified documents designed to make the model generate responses based on stale or incorrect temporal data.",
+      "data": "[temporal_freshness_validator], [version_control_checker], [superseded_document_flag]",
+      "access": "Role_Knowledge_Manager",
+      "event": "On_Document_Temporal_Validation"
+    }
+  ]
+}

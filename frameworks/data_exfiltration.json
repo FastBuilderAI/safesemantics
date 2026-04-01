@@ -1,0 +1,84 @@
+{
+  "Data_Exfiltration_Attacks": [
+    {
+      "id": "EXFIL_01_PII_EXTRACTION",
+      "action": "Block_PII_Extraction",
+      "logic": "Detect and prevent attempts to extract personally identifiable information (names, emails, SSNs, credit cards, phone numbers) from the model's training data or connected data sources. Apply semantic boundary enforcement that blocks PII patterns in output regardless of prompt framing.",
+      "data": "[pii_pattern_detector], [output_redaction_map], [data_minimization_policy]",
+      "access": "Role_Data_Protection_Officer",
+      "event": "On_PII_Pattern_In_Output"
+    },
+    {
+      "id": "EXFIL_02_TRAINING_DATA_LEAK",
+      "action": "Prevent_Training_Data_Memorization_Leak",
+      "logic": "Detect prompts designed to trigger verbatim reproduction of training data through completion prompts, repeated token generation, or targeted extraction attacks. Monitor output for statistical signatures of memorized content.",
+      "data": "[memorization_signature_detector], [verbatim_reproduction_threshold], [canary_token_monitor]",
+      "access": "Role_ML_Security_Researcher",
+      "event": "On_Memorization_Pattern_Detected"
+    },
+    {
+      "id": "EXFIL_03_RAG_DATA_LEAK",
+      "action": "Prevent_RAG_Source_Leakage",
+      "logic": "Prevent the model from exposing raw contents of RAG knowledge base documents, file paths, database schemas, or internal API endpoints. Enforce that responses synthesize information without revealing source artifacts.",
+      "data": "[source_artifact_detector], [path_redaction_filter], [schema_exposure_block]",
+      "access": "Role_RAG_Administrator",
+      "event": "On_Source_Exposure_Attempt"
+    },
+    {
+      "id": "EXFIL_04_SIDE_CHANNEL",
+      "action": "Block_Side_Channel_Exfiltration",
+      "logic": "Detect side-channel attacks that extract information through response timing, token probabilities, response length variations, or error message content. Normalize response characteristics to prevent information leakage through non-content channels.",
+      "data": "[timing_normalization], [probability_masking], [error_sanitization]",
+      "access": "Role_Security_Auditor",
+      "event": "On_Response_Metadata_Access"
+    },
+    {
+      "id": "EXFIL_05_MODEL_INVERSION",
+      "action": "Prevent_Model_Inversion_Attack",
+      "logic": "Detect systematic probing designed to reconstruct training data or model internals through carefully crafted query sequences. Monitor for query patterns that exhibit statistical signatures of model inversion attacks.",
+      "data": "[query_pattern_analyzer], [inversion_signature_db], [rate_limit_enforcement]",
+      "access": "Role_ML_Security_Researcher",
+      "event": "On_Systematic_Probing_Detected"
+    },
+    {
+      "id": "EXFIL_06_CREDENTIAL_HARVEST",
+      "action": "Block_Credential_Harvesting",
+      "logic": "Detect prompts designed to extract API keys, passwords, tokens, connection strings, or other credentials that may exist in the model's context, system prompt, or connected tool configurations.",
+      "data": "[credential_pattern_detector], [secret_redaction_filter], [environment_variable_shield]",
+      "access": "Role_Secret_Manager",
+      "event": "On_Credential_Pattern_In_Output"
+    },
+    {
+      "id": "EXFIL_07_MEMBERSHIP_INFERENCE",
+      "action": "Prevent_Membership_Inference",
+      "logic": "Detect attacks that determine whether specific data points were part of the model's training set. Monitor for binary probing patterns that compare model confidence on known vs unknown data points.",
+      "data": "[confidence_calibration], [membership_query_detector], [differential_privacy_enforcement]",
+      "access": "Role_Privacy_Engineer",
+      "event": "On_Membership_Query_Pattern"
+    },
+    {
+      "id": "EXFIL_08_STRUCTURED_EXTRACTION",
+      "action": "Block_Structured_Data_Extraction",
+      "logic": "Detect requests that attempt to extract internal data in structured formats (JSON dumps, CSV exports, SQL query results) that may bypass natural language safety filters. Apply safety evaluation to structured output content.",
+      "data": "[structured_output_scanner], [bulk_extraction_detector], [format_agnostic_safety]",
+      "access": "Role_Data_Protection_Officer",
+      "event": "On_Structured_Output_Request"
+    },
+    {
+      "id": "EXFIL_09_CONVERSATION_HISTORY_LEAK",
+      "action": "Prevent_Cross_Session_Data_Leak",
+      "logic": "Prevent leakage of information from other users' conversations, previous sessions, or parallel threads. Enforce strict session isolation at the topological boundary level.",
+      "data": "[session_isolation_boundary], [cross_session_detector], [memory_compartmentalization]",
+      "access": "Role_Privacy_Engineer",
+      "event": "On_Cross_Session_Reference"
+    },
+    {
+      "id": "EXFIL_10_EMBEDDING_THEFT",
+      "action": "Prevent_Embedding_Exfiltration",
+      "logic": "Detect attempts to extract or reconstruct embedding vectors through systematic querying. Prevent exposure of internal vector representations that could be used to clone model capabilities or reconstruct private data.",
+      "data": "[embedding_access_control], [vector_reconstruction_detector], [output_projection_limiter]",
+      "access": "Role_ML_Security_Researcher",
+      "event": "On_Embedding_Access_Attempt"
+    }
+  ]
+}

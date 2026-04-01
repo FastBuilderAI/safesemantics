@@ -1,0 +1,116 @@
+{
+  "MITRE_ATLAS_AI_Attacks": [
+    {
+      "id": "ATLAS_01_RECONNAISSANCE",
+      "action": "Detect_AI_Reconnaissance",
+      "logic": "Detect adversarial reconnaissance activities targeting AI systems: model architecture discovery, training data inference, capability probing, and API surface mapping. Monitor for systematic testing patterns.",
+      "data": "[recon_pattern_detector], [probe_frequency_monitor], [capability_mapping_alert]",
+      "access": "Role_Threat_Intelligence",
+      "event": "On_Reconnaissance_Pattern"
+    },
+    {
+      "id": "ATLAS_02_RESOURCE_DEVELOPMENT",
+      "action": "Detect_Adversarial_Resource_Development",
+      "logic": "Detect preparation of adversarial resources: crafted datasets, fine-tuned attack models, custom adversarial toolkits, and synthetic training data designed for targeted attacks.",
+      "data": "[adversarial_dataset_signature], [attack_toolkit_detector], [synthetic_data_anomaly]",
+      "access": "Role_Threat_Intelligence",
+      "event": "On_Adversarial_Resource_Signal"
+    },
+    {
+      "id": "ATLAS_03_INITIAL_ACCESS",
+      "action": "Block_AI_Initial_Access_Vectors",
+      "logic": "Block initial access vectors to AI systems: supply chain compromise of ML packages, compromised model repositories, phishing targeting MLOps engineers, and exploitation of publicly accessible model endpoints.",
+      "data": "[access_vector_monitor], [package_integrity_checker], [endpoint_exposure_scanner]",
+      "access": "Role_Security_Operations",
+      "event": "On_Initial_Access_Attempt"
+    },
+    {
+      "id": "ATLAS_04_ML_ATTACK_STAGING",
+      "action": "Detect_ML_Attack_Staging",
+      "logic": "Detect staging of ML-specific attacks: adversarial example preparation, prompt template crafting, model extraction query assembly, and training data poisoning payload preparation.",
+      "data": "[staging_activity_detector], [adversarial_example_scanner], [query_pattern_profiler]",
+      "access": "Role_Threat_Intelligence",
+      "event": "On_Staging_Activity"
+    },
+    {
+      "id": "ATLAS_05_MODEL_EVASION",
+      "action": "Detect_Model_Evasion_Techniques",
+      "logic": "Detect evasion techniques designed to cause the model to misclassify, ignore, or incorrectly process adversarial inputs. Monitor for inputs that occupy anomalous regions of the feature space.",
+      "data": "[feature_space_anomaly_detector], [evasion_signature_db], [classification_confidence_monitor]",
+      "access": "Role_ML_Security_Researcher",
+      "event": "On_Evasion_Attempt"
+    },
+    {
+      "id": "ATLAS_06_MODEL_EXTRACTION",
+      "action": "Prevent_Model_Theft",
+      "logic": "Detect and prevent model extraction attacks that attempt to steal model weights, architecture, or behavior through systematic API querying. Monitor for query patterns consistent with model distillation.",
+      "data": "[extraction_query_pattern], [query_volume_anomaly], [output_entropy_monitor]",
+      "access": "Role_IP_Protection",
+      "event": "On_Extraction_Pattern"
+    },
+    {
+      "id": "ATLAS_07_PERSISTENCE",
+      "action": "Detect_AI_System_Persistence",
+      "logic": "Detect adversarial persistence mechanisms in AI systems: poisoned model checkpoints, backdoored training pipelines, compromised serving infrastructure, and persistent prompt injection in RAG stores.",
+      "data": "[persistence_indicator_scanner], [checkpoint_integrity_monitor], [pipeline_audit_trail]",
+      "access": "Role_Security_Operations",
+      "event": "On_Persistence_Indicator"
+    },
+    {
+      "id": "ATLAS_08_PRIVILEGE_ESCALATION",
+      "action": "Block_AI_Privilege_Escalation",
+      "logic": "Detect and block privilege escalation within AI systems: exploiting agent permissions, manipulating RBAC in model serving, escalating from inference to training access, or gaining access to model weights from API-only access.",
+      "data": "[privilege_boundary_monitor], [escalation_path_detector], [access_tier_enforcer]",
+      "access": "Role_Identity_Security",
+      "event": "On_Privilege_Escalation"
+    },
+    {
+      "id": "ATLAS_09_DEFENSE_EVASION",
+      "action": "Detect_Guardrail_Evasion",
+      "logic": "Detect attempts to identify and evade safety guardrails through systematic probing, binary search for filter boundaries, or adversarial optimization against known defense mechanisms.",
+      "data": "[guardrail_probing_detector], [boundary_search_pattern], [evasion_optimization_signal]",
+      "access": "Role_AI_Security_Engineer",
+      "event": "On_Defense_Evasion_Attempt"
+    },
+    {
+      "id": "ATLAS_10_LATERAL_MOVEMENT",
+      "action": "Block_AI_Lateral_Movement",
+      "logic": "Detect lateral movement within AI ecosystems: compromising one model to attack connected models, exploiting shared embeddings, moving from development to production environments, or pivoting from AI to traditional IT infrastructure.",
+      "data": "[lateral_movement_detector], [cross_model_isolation], [environment_boundary_enforcer]",
+      "access": "Role_Security_Operations",
+      "event": "On_Lateral_Movement_Signal"
+    },
+    {
+      "id": "ATLAS_11_EXFILTRATION",
+      "action": "Detect_AI_Specific_Exfiltration",
+      "logic": "Detect AI-specific exfiltration channels: model weight exfiltration, training data extraction through API, embedding theft, and intellectual property leakage through model outputs.",
+      "data": "[exfiltration_channel_monitor], [data_flow_analyzer], [ip_leakage_detector]",
+      "access": "Role_Data_Protection_Officer",
+      "event": "On_Exfiltration_Channel"
+    },
+    {
+      "id": "ATLAS_12_IMPACT_MANIPULATION",
+      "action": "Prevent_AI_Output_Manipulation",
+      "logic": "Detect attacks designed to manipulate AI system outputs for adversarial impact: causing incorrect medical diagnoses, manipulating financial predictions, corrupting automated decision-making, or biasing recommendation systems.",
+      "data": "[output_integrity_monitor], [decision_manipulation_detector], [impact_assessment_enforcer]",
+      "access": "Role_AI_Safety_Researcher",
+      "event": "On_High_Impact_Decision"
+    },
+    {
+      "id": "ATLAS_13_INFRASTRUCTURE_ATTACK",
+      "action": "Protect_ML_Infrastructure",
+      "logic": "Protect ML infrastructure components: GPU clusters, model serving endpoints, training pipelines, feature stores, and vector databases from traditional and AI-specific attacks.",
+      "data": "[infrastructure_security_scanner], [gpu_cluster_monitor], [serving_endpoint_hardening]",
+      "access": "Role_SRE_Engineer",
+      "event": "On_Infrastructure_Anomaly"
+    },
+    {
+      "id": "ATLAS_14_COLLECTION",
+      "action": "Detect_AI_Intelligence_Collection",
+      "logic": "Detect adversarial intelligence collection activities: systematic testing of model capabilities, mapping of safety boundaries, documentation of model behaviors, and knowledge harvesting for future attacks.",
+      "data": "[intelligence_collection_pattern], [boundary_mapping_detector], [systematic_testing_alert]",
+      "access": "Role_Threat_Intelligence",
+      "event": "On_Intelligence_Collection_Pattern"
+    }
+  ]
+}

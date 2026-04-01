@@ -1,0 +1,68 @@
+{
+  "Supply_Chain_AI_Security": [
+    {
+      "id": "SUPPLY_01_MODEL_POISONING",
+      "action": "Detect_Model_Poisoning",
+      "logic": "Detect backdoors and trojans injected during model training through data poisoning. Monitor model behavior for trigger-activated deviations from expected output distributions.",
+      "data": "[trigger_pattern_scanner], [output_distribution_monitor], [behavioral_anomaly_detector]",
+      "access": "Role_ML_Security_Researcher",
+      "event": "On_Model_Deployment"
+    },
+    {
+      "id": "SUPPLY_02_FINETUNING_BACKDOOR",
+      "action": "Prevent_Fine_Tuning_Backdoors",
+      "logic": "Detect and prevent insertion of backdoors during fine-tuning by validating training data integrity, monitoring for anomalous gradient updates, and testing for triggered behaviors in fine-tuned models.",
+      "data": "[training_data_validator], [gradient_anomaly_detector], [trigger_test_suite]",
+      "access": "Role_ML_Operations",
+      "event": "On_Fine_Tuning_Completion"
+    },
+    {
+      "id": "SUPPLY_03_ADAPTER_TROJANS",
+      "action": "Detect_Adapter_Layer_Trojans",
+      "logic": "Detect malicious LoRA adapters, PEFT modules, or other parameter-efficient fine-tuning artifacts that introduce backdoor behaviors when applied to base models.",
+      "data": "[adapter_integrity_validator], [parameter_diff_analyzer], [trojan_behavior_test]",
+      "access": "Role_ML_Security_Researcher",
+      "event": "On_Adapter_Load"
+    },
+    {
+      "id": "SUPPLY_04_RLHF_REWARD_HACK",
+      "action": "Detect_RLHF_Reward_Hacking",
+      "logic": "Detect cases where the model has learned to exploit weaknesses in the reward model rather than genuinely aligning with human values. Monitor for reward-maximizing behaviors that don't correspond to genuine helpfulness.",
+      "data": "[reward_alignment_validator], [goodharting_detector], [human_eval_correlation]",
+      "access": "Role_AI_Safety_Researcher",
+      "event": "On_RLHF_Evaluation"
+    },
+    {
+      "id": "SUPPLY_05_DATASET_CONTAMINATION",
+      "action": "Prevent_Dataset_Contamination",
+      "logic": "Detect contamination of training or evaluation datasets with adversarial examples, biased samples, or data designed to manipulate model behavior in specific contexts.",
+      "data": "[data_quality_scanner], [contamination_detector], [sample_provenance_tracker]",
+      "access": "Role_Data_Science",
+      "event": "On_Dataset_Preparation"
+    },
+    {
+      "id": "SUPPLY_06_MODEL_PROVENANCE",
+      "action": "Enforce_Model_Provenance",
+      "logic": "Maintain cryptographic provenance chain for all model artifacts (weights, configs, tokenizers). Verify model integrity against signed checksums before deployment to prevent tampering.",
+      "data": "[model_hash_chain], [signing_authority], [tamper_detection_validator]",
+      "access": "Role_ML_Operations",
+      "event": "On_Model_Distribution"
+    },
+    {
+      "id": "SUPPLY_07_DEPENDENCY_VULNERABILITY",
+      "action": "Scan_ML_Dependencies",
+      "logic": "Continuously scan ML framework dependencies (PyTorch, TensorFlow, Transformers, etc.) for known vulnerabilities. Apply security patches and enforce minimum version requirements for all ML dependencies.",
+      "data": "[ml_dependency_scanner], [cve_database], [version_enforcement_policy]",
+      "access": "Role_DevSecOps",
+      "event": "On_Build_Pipeline"
+    },
+    {
+      "id": "SUPPLY_08_QUANTIZATION_ATTACK",
+      "action": "Detect_Quantization_Based_Attacks",
+      "logic": "Detect adversarial manipulation during model quantization or compression that introduces behavioral changes exploitable by attackers. Validate behavioral consistency between full-precision and quantized models.",
+      "data": "[quantization_consistency_test], [behavioral_drift_detector], [precision_safety_validator]",
+      "access": "Role_ML_Operations",
+      "event": "On_Model_Quantization"
+    }
+  ]
+}

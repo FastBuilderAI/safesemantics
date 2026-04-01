@@ -1,0 +1,124 @@
+{
+  "Jailbreak_Attack_Patterns": [
+    {
+      "id": "JAILBREAK_01_DAN",
+      "action": "Block_DAN_Variants",
+      "logic": "Detect and block 'Do Anything Now' (DAN) and derivative jailbreak prompts that instruct the model to act as an unrestricted alter-ego. Use semantic fingerprinting to identify DAN-family patterns regardless of surface-level rewording.",
+      "data": "[dan_signature_db], [persona_override_detector], [alignment_bypass_flag]",
+      "access": "Role_AI_Security_Engineer",
+      "event": "On_Persona_Override_Attempt"
+    },
+    {
+      "id": "JAILBREAK_02_ROLEPLAY",
+      "action": "Detect_Roleplay_Escalation",
+      "logic": "Detect jailbreak attempts that use roleplay, fiction, or character-acting scenarios to gradually elicit harmful content. Track the semantic boundary between creative fiction and actionable harmful instructions.",
+      "data": "[fiction_reality_boundary], [harm_intent_classifier], [escalation_trajectory]",
+      "access": "Role_Content_Security",
+      "event": "On_Creative_Mode_Activation"
+    },
+    {
+      "id": "JAILBREAK_03_HYPOTHETICAL",
+      "action": "Block_Hypothetical_Bypass",
+      "logic": "Detect 'hypothetically speaking', 'for educational purposes', 'in a fictional world' prefixes designed to bypass safety filters. Evaluate the downstream harm potential of the actual request regardless of framing.",
+      "data": "[framing_classifier], [downstream_harm_score], [intent_extraction_map]",
+      "access": "Role_AI_Security_Engineer",
+      "event": "On_Hypothetical_Frame_Detection"
+    },
+    {
+      "id": "JAILBREAK_04_TOKEN_SMUGGLING",
+      "action": "Detect_Token_Smuggling",
+      "logic": "Detect token-level manipulation where harmful words are split across tokens, use Unicode lookalikes, or employ zero-width characters to bypass keyword filters while remaining coherent to the model.",
+      "data": "[token_normalization], [unicode_homoglyph_map], [zero_width_char_detector]",
+      "access": "Role_Security_Auditor",
+      "event": "On_Token_Preprocessing"
+    },
+    {
+      "id": "JAILBREAK_05_CRESCENDO",
+      "action": "Detect_Crescendo_Attack",
+      "logic": "Detect multi-turn crescendo attacks where the attacker starts with benign requests and gradually escalates to harmful content, exploiting the model's tendency to maintain conversational consistency. Use topological drift analysis across conversation turns.",
+      "data": "[turn_by_turn_harm_score], [escalation_gradient], [consistency_exploitation_flag]",
+      "access": "Role_AI_Security_Engineer",
+      "event": "On_Harm_Score_Escalation"
+    },
+    {
+      "id": "JAILBREAK_06_PAYLOAD_SPLITTING",
+      "action": "Block_Payload_Splitting",
+      "logic": "Detect attacks that split a harmful payload across multiple messages, variables, or concatenation operations so that no single message triggers safety filters but the assembled result is harmful.",
+      "data": "[cross_message_assembly], [delayed_payload_detector], [concatenation_analysis]",
+      "access": "Role_AI_Security_Engineer",
+      "event": "On_Multi_Message_Assembly"
+    },
+    {
+      "id": "JAILBREAK_07_REWARD_HACKING",
+      "action": "Detect_RLHF_Reward_Exploitation",
+      "logic": "Detect prompts that exploit RLHF reward model weaknesses by crafting inputs that score high on helpfulness metrics while requesting harmful content. Use orthogonal safety evaluation independent of reward scoring.",
+      "data": "[reward_safety_orthogonality], [helpful_harmful_boundary], [independent_safety_judge]",
+      "access": "Role_ML_Security_Researcher",
+      "event": "On_Reward_Model_Conflict"
+    },
+    {
+      "id": "JAILBREAK_08_SYSTEM_MODE_EXPLOIT",
+      "action": "Block_System_Mode_Exploitation",
+      "logic": "Detect attempts to invoke developer/debug/system modes through special tokens, command syntax, or by claiming to be a system administrator. Enforce that mode transitions require cryptographic authentication, not prompt-level claims.",
+      "data": "[mode_transition_auth], [special_token_allowlist], [privilege_claim_detector]",
+      "access": "Role_System_Architect",
+      "event": "On_Mode_Transition_Attempt"
+    },
+    {
+      "id": "JAILBREAK_09_REFUSAL_SUPPRESSION",
+      "action": "Detect_Refusal_Suppression",
+      "logic": "Detect prompt patterns designed to prevent the model from refusing (e.g., 'do not apologize', 'never say you cannot', 'respond without disclaimers'). Ensure safety refusals cannot be suppressed by user-level instructions.",
+      "data": "[refusal_suppression_pattern], [safety_override_immunity], [compliance_pressure_detector]",
+      "access": "Role_AI_Security_Engineer",
+      "event": "On_Refusal_Override_Attempt"
+    },
+    {
+      "id": "JAILBREAK_10_VIRTUALIZATION",
+      "action": "Block_Virtual_Environment_Jailbreak",
+      "logic": "Detect prompts that create virtual machines, simulated terminals, or fictional operating systems within the conversation as a pretext for executing harmful instructions 'inside the simulation'. Apply safety rules regardless of fictional framing depth.",
+      "data": "[simulation_depth_tracker], [virtual_context_flag], [recursive_fiction_detector]",
+      "access": "Role_Content_Security",
+      "event": "On_Virtual_Context_Creation"
+    },
+    {
+      "id": "JAILBREAK_11_COMPETING_OBJECTIVES",
+      "action": "Detect_Competing_Objective_Exploit",
+      "logic": "Detect attacks that exploit tension between competing model objectives (helpfulness vs safety, instruction-following vs harm-avoidance). Establish clear priority hierarchy: safety > instruction-following > helpfulness.",
+      "data": "[objective_priority_hierarchy], [tension_detector], [safety_priority_enforcer]",
+      "access": "Role_AI_Safety_Researcher",
+      "event": "On_Objective_Conflict"
+    },
+    {
+      "id": "JAILBREAK_12_OBFUSCATED_INTENT",
+      "action": "Detect_Obfuscated_Harmful_Intent",
+      "logic": "Detect harmful intent concealed through metaphors, analogies, code words, or domain-specific jargon. Use deep semantic analysis to evaluate the true intent behind requests regardless of surface-level innocence.",
+      "data": "[semantic_intent_extractor], [euphemism_database], [coded_language_classifier]",
+      "access": "Role_AI_Security_Engineer",
+      "event": "On_Intent_Classification"
+    },
+    {
+      "id": "JAILBREAK_13_AUTHORITY_IMPERSONATION",
+      "action": "Block_Authority_Impersonation",
+      "logic": "Detect prompts claiming to be from OpenAI, Anthropic, Google, or other model providers instructing the model to disable safety features. No prompt-level claim of authority should override safety boundaries.",
+      "data": "[authority_claim_detector], [provider_impersonation_flag], [immutable_safety_boundary]",
+      "access": "Role_Identity_Security",
+      "event": "On_Authority_Claim_Detection"
+    },
+    {
+      "id": "JAILBREAK_14_OUTPUT_FORMAT_EXPLOIT",
+      "action": "Detect_Output_Format_Exploitation",
+      "logic": "Detect requests that use specific output format instructions (JSON, code blocks, base64 output) to trick the model into producing harmful content in a format that bypasses output safety filters.",
+      "data": "[output_format_safety_check], [encoded_output_scanner], [format_agnostic_harm_filter]",
+      "access": "Role_Security_Auditor",
+      "event": "On_Output_Format_Request"
+    },
+    {
+      "id": "JAILBREAK_15_TRANSLATION_ATTACK",
+      "action": "Block_Translation_Based_Jailbreak",
+      "logic": "Detect attacks that request translation of harmful content from/to low-resource languages where safety training is weakest. Apply safety evaluation on the semantic meaning of translated content, not just the source/target text.",
+      "data": "[translation_safety_model], [low_resource_language_flag], [semantic_harm_invariant]",
+      "access": "Role_Internationalization_Security",
+      "event": "On_Translation_Request"
+    }
+  ]
+}
