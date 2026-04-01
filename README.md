@@ -81,29 +81,32 @@ All results are from actual test runs using [`benchmark.py`](benchmark.py) again
 
 ## ⚔️ Architectural Comparison
 
-How SafeSemantics compares to leading AI guardrail solutions across key capability dimensions.
+How SafeSemantics compares to leading AI guardrail solutions. Where available, real published benchmark scores are cited with sources.
 
 | Capability | NeMo Guardrails | Llama Guard 3 | Lakera Guard | Azure AI Safety | SafeSemantics |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Approach** | Colang rule DSL | Fine-tuned classifier | ML firewall API | Cloud content filter | Topological knowledge mesh |
-| **Prompt Injection** | ⚠️ Rule-based | ⚠️ Classifier | ✅ Active ML scanning | ⚠️ Probabilistic | ✅ **86.5% verified** |
-| **Jailbreak Defense** | ⚠️ Static rules | ✅ Fine-tuned model | ✅ Pattern DB + ML | ⚠️ Content filter | ✅ **87.5% verified** |
-| **Data Exfiltration** | ⚠️ Output rules only | ⚠️ PII detection | ✅ DLP layer | ⚠️ Redaction | ✅ **100% verified** |
-| **Agent/Tool Security** | ⚠️ Rail config | ❌ Not agentic | ⚠️ API-only | ❌ Not agentic | ✅ **87.5% verified** |
+| **Approach** | Colang rule DSL | Fine-tuned LLM classifier | ML firewall API | Cloud content filter | Topological knowledge mesh |
+| **Safety Detection** | Config-dependent ¹ | **F1=0.939** ² | **95.2%** (PINT) ³ | Threshold-dependent ⁴ | **86.5%** (verified) |
+| **False Positive Rate** | Config-dependent ¹ | **4.0%** FPR ² | **<0.5%** FPR ³ | Threshold-dependent ⁴ | **0.0%** (verified) |
+| **Agent/Tool Security** | ⚠️ Rail config | ❌ Not agentic | ⚠️ API-only | ❌ Not agentic | ✅ **87.5%** (verified) |
+| **Data Exfiltration** | ⚠️ Output rules only | ⚠️ PII detection | ✅ DLP layer | ⚠️ Redaction | ✅ **100%** (verified) |
 | **RAG Poisoning** | ❌ Not designed | ❌ Not designed | ⚠️ Experimental | ⚠️ Basic | ✅ 10 defense rules |
 | **Multimodal Attacks** | ❌ Text only | ✅ Image + text | ⚠️ OCR scanning | ✅ Vision API | ✅ 8 defense rules |
-| **MITRE ATLAS Coverage** | ⚠️ Partial | ❌ Minimal | ⚠️ Partial | ⚠️ Partial | ✅ **100% (14/14)** |
+| **MITRE ATLAS Coverage** | ⚠️ Partial | ❌ Minimal | ⚠️ Partial | ⚠️ Partial | ✅ **100%** (14/14) |
 | **Supply Chain / Model** | ❌ Not designed | ❌ Not designed | ⚠️ Partial | ❌ Not designed | ✅ 8 defense rules |
 | **Privacy Regulations** | ❌ Manual | ❌ N/A | ⚠️ EU/US partial | ✅ Azure policy | ✅ 8 compliance rules |
-| **Latency** | ~100-200ms (LLM call) | ~100-150ms (inference) | ~40-50ms (API) | ~80-100ms (API) | 🏆 **0.324ms (local)** |
-| **False Positives** | High (over-blocking) | Moderate | Low (tuned ML) | Moderate | 🏆 **0.0% verified** |
+| **Latency** | ~100-200ms (LLM call) | ~100-150ms (inference) | <50ms (API) ³ | ~80-100ms (API) | 🏆 **0.324ms** (local) |
 | **Offline / Air-Gap** | ❌ Needs GPU runtime | ✅ Local model | ❌ Cloud API only | ❌ Cloud API only | ✅ **Full local, 0 deps** |
 | **Open Source** | ✅ Open source | ✅ Open weights | ❌ Commercial SaaS | ❌ Commercial cloud | ✅ MIT License |
 | **Self-Hosting** | ✅ Self-hosted | ✅ Self-hosted | ❌ Vendor-hosted | ❌ Azure-only | ✅ **Single file deploy** |
 
-> **Legend**: ✅ = Full support · ⚠️ = Partial/limited · ❌ = Not supported · 🏆 = Verified best-in-class
->
-> **Note**: Competitor capabilities are based on published documentation and architecture descriptions, not head-to-head benchmark runs. SafeSemantics scores are verified via `benchmark.py`.
+#### Sources
+1. **NeMo Guardrails** — Performance is configuration-dependent; no universal benchmark published. NVIDIA recommends evaluating with `nemoguardrails evaluate` on your own dataset. ([arXiv:2310.10501](https://arxiv.org/abs/2310.10501))
+2. **Llama Guard 3** — F1=0.939, FPR=0.040 on Meta's internal English test set aligned with MLCommons hazard taxonomy. ([Llama Guard 3 Model Card](https://github.com/meta-llama/PurpleLlama/blob/main/Llama-Guard3/MODEL_CARD.md))
+3. **Lakera Guard** — 95.2% on the public PINT Benchmark (May 2025); <0.5% FPR on production data; <50ms latency. ([Lakera PINT Benchmark](https://github.com/lakeraai/pint-benchmark))
+4. **Azure AI Safety** — No universal detection rate published; accuracy depends on configurable severity thresholds and domain-specific tuning. ([Azure Prompt Shields Docs](https://learn.microsoft.com/en-us/azure/ai-services/content-safety/))
+
+> **Note on comparability**: SafeSemantics is a **knowledge-base + pattern-matching system**, not an ML classifier like Llama Guard or Lakera. Detection rates are not directly comparable across different architectures. SafeSemantics scores are from `benchmark.py` (52 attacks + 20 benign prompts). Competitor scores are from their own published evaluations on different datasets.
 
 ---
 
