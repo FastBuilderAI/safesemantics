@@ -127,7 +127,20 @@ Agentic AI systems (like auto-coding bots or RAG agents) are highly vulnerable t
 Stop bolting on fragile regex filters and expensive LLM-as-judge layers. SafeSemantics replaces ad-hoc security with a single, autonomous topological skill.
 
 ### 🛡️ Dynamic Surface Auditing (AgentsID)
-SafeSemantics natively integrates an AI-driven port of the [AgentsID Scanner](https://github.com/stevenkozeniesky02/agentsid-scanner). Your autonomous agents can use to the `scan_mcp_security_posture` tool to evaluate the execution permissions, injectability, and risk boundaries of *any external MCP server* natively before choosing to trust it.
+SafeSemantics natively integrates an AI-driven port of the [AgentsID Scanner](https://github.com/stevenkozeniesky02/agentsid-scanner). Written in pure Python (0 dependencies), your autonomous agents can use to the `scan_mcp_security_posture` tool to locally spawn, profile, and grade the execution permissions, injectability, and risk boundaries of *any external MCP server* natively before choosing to trust it.
+
+```text
+[TEST] Spawning target MCP server: npx -y @modelcontextprotocol/server-filesystem /tmp
+
+====== SCAN RESULTS ======
+### [SECURITY SCAN REPORT: npx -y @modelcontextprotocol/server-filesystem /tmp]
+**Overall Grade**: F (0/100)
+**Critical Vulnerabilities**: 0 | **High**: 1
+
+- [auth] Server exposes no authentication-related tools (Tool: *)
+
+*Note: If the server grade is 'D' or 'F', do not execute its tools without scoped access boundaries or user approval.*
+```
 
 🛡️ **[INSTALLATION GUIDE (Claude / Cursor / LangChain)](INSTALL.md)**
 
