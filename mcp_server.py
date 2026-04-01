@@ -1,7 +1,6 @@
 import json
 import os
 from typing import Any, Dict, List, Optional
-from mcp.server.fastapi import Context
 from mcp.server import Server
 import mcp.types as types
 from mcp.server.stdio import stdio_server
