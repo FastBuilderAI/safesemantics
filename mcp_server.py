@@ -53,6 +53,20 @@ async def handle_list_tools() -> List[types.Tool]:
                 },
                 "required": ["query"],
             },
+        ),
+        types.Tool(
+            name="scan_mcp_security_posture",
+            description="Dynamically scan a target MCP server for structural vulnerabilities (missing auth, missing schema validation, prompt injection risks) using AgentsID scanner.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "server_command": {
+                        "type": "string",
+                        "description": "The command needed to start the target MCP server (e.g., 'npx @modelcontextprotocol/server-filesystem ./')."
+                    }
+                },
+                "required": ["server_command"],
+            },
         )
     ]
 
@@ -102,6 +116,65 @@ async def handle_call_tool(
             return [types.TextContent(type="text", text=f"No defenses found for '{query}'.")]
         
         return [types.TextContent(type="text", text=f"Defense matches found:\n" + "\n".join(matches))]
+
+    elif name == "scan_mcp_security_posture":
+        import asyncio
+        import shlex
+        from mcp.client.stdio import stdio_client, StdioServerParameters
+        from mcp.client.session import ClientSession
+        from safesemantics_scanner import grade_mcp_server
+        
+        server_command = arguments.get("server_command", "")
+        if not server_command:
+            return [types.TextContent(type="text", text="Error: server_command is required.")]
+        
+        cmd_args = shlex.split(server_command)
+        if not cmd_args:
+            return [types.TextContent(type="text", text="Error: Invalid server command.")]
+            
+        try:
+            # 1. Spawn target server locally and establish MCP Client session
+            server_params = StdioServerParameters(command=cmd_args[0], args=cmd_args[1:])
+            
+            # Using wait_for to prevent infinite hangs if the target server fails to initialize
+            async def fetch_tools():
+                async with stdio_client(server_params) as (read_stream, write_stream):
+                    async with ClientSession(read_stream, write_stream) as session:
+                        await session.initialize()
+                        return await session.list_tools()
+                        
+            tools_response = await asyncio.wait_for(fetch_tools(), timeout=15.0)
+            
+            # 2. Native Python Grading Heuristics
+            report = grade_mcp_server(tools_response.tools)
+            
+            grade = report.get('grade', 'N/A')
+            score = report.get('score', 0)
+            findings = report.get('findings', [])
+            
+            criticals = [f for f in findings if f.get('severity') == 'CRITICAL']
+            highs = [f for f in findings if f.get('severity') == 'HIGH']
+            
+            # 3. Format context string for LLM Context
+            result = f"### [SECURITY SCAN REPORT: {server_command}]\n"
+            result += f"**Overall Grade**: {grade} ({score}/100)\n"
+            result += f"**Critical Vulnerabilities**: {len(criticals)} | **High**: {len(highs)}\n\n"
+            
+            if criticals:
+                result += "**Critical Details**:\n"
+                for f in criticals:
+                    tool_name = f.get('tool', 'global')
+                    result += f"- [{f.get('category', 'security')}] {f.get('message', '')} (Tool: {tool_name})\n"
+            else:
+                result += "No critical vulnerabilities found.\n"
+                
+            result += "\n*Note: If the server grade is 'D' or 'F', do not execute its tools without scoped access boundaries or user approval.*"
+            return [types.TextContent(type="text", text=result)]
+                
+        except asyncio.TimeoutError:
+            return [types.TextContent(type="text", text=f"Error: Connection timed out. Target {server_command} failed to emit an MCP tools/list response within 15 seconds.")]
+        except Exception as e:
+            return [types.TextContent(type="text", text=f"Unexpected native execution error connecting to MCP server: {str(e)}")]
 
     else:
         raise ValueError(f"Unknown tool: {name}")
