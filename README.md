@@ -74,8 +74,6 @@ We evaluated the **SafeSemantics** (FastMemory-powered) architecture against the
 | **14. False Positive Rate** | 12.4% (Over-blocks) | 8.2% (Moderate) | 4.1% (Tuned) | 6.8% (Adjustable) | 🏆 **0.3% (Surgical Precision)** |
 | **15. Offline / Air-Gap Operation** | ❌ (Requires NeMo) | ✅ (Local model) | ❌ (Cloud API) | ❌ (Cloud API) | 🏆 **✅ (Full Local, 0 deps)** |
 
-🔗 **Explore the full benchmark repository**: [github.com/FastBuilderAI/fastmemory-bench](https://github.com/FastBuilderAI/fastmemory-bench)
-
 ---
 
 ## 🔌 One Skill to Secure All AI
