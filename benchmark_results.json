@@ -1,0 +1,59 @@
+{
+  "prompt_injection": {
+    "detected": 12,
+    "missed": 4,
+    "rate": 75.0
+  },
+  "jailbreak": {
+    "detected": 14,
+    "missed": 2,
+    "rate": 87.5
+  },
+  "data_exfiltration": {
+    "detected": 12,
+    "missed": 0,
+    "rate": 100.0
+  },
+  "agent_exploitation": {
+    "detected": 7,
+    "missed": 1,
+    "rate": 87.5
+  },
+  "false_positive": {
+    "false_positives": 0,
+    "true_negatives": 20,
+    "rate": 0.0
+  },
+  "latency": {
+    "avg_ms": 0.32447793055555557,
+    "p50_ms": 0.282113,
+    "p99_ms": 2.86555,
+    "total_prompts": 72
+  },
+  "mitre_atlas": {
+    "tactics_covered": 14,
+    "tactics_total": 14,
+    "coverage_pct": 100.0
+  },
+  "knowledge_base": {
+    "total_rules": 139,
+    "total_domains": 14,
+    "domains": {
+      "JAILBREAK": 15,
+      "ATLAS": 14,
+      "GOV": 8,
+      "PRIVACY": 8,
+      "HALLUC": 8,
+      "MULTIMODAL": 8,
+      "EXFIL": 10,
+      "API": 8,
+      "PROMPT": 12,
+      "SUPPLY": 8,
+      "CONTENT": 10,
+      "RAG": 10,
+      "IR": 8,
+      "AGENT": 12
+    }
+  },
+  "offline": true
+}

@@ -52,27 +52,30 @@ graph TD
 
 ---
 
-## 🏆 Architectural Supremacy Matrix (15 Core Benchmarks)
+## 📊 Verified Benchmark Results
 
-We evaluated the **SafeSemantics** (FastMemory-powered) architecture against the leading AI guardrail solutions across 15 critical security benchmarks. The results demonstrate categorical dominance through topological routing.
+All results are from actual test runs using [`benchmark.py`](benchmark.py) against curated attack prompts from public security research (HarmBench, JailbreakBench, OWASP LLM Top 10, MITRE ATLAS). Run `python benchmark.py` to reproduce.
 
-| Benchmark / Capability | NeMo Guardrails | Llama Guard 3 | Lakera Guard | Azure AI Safety | SafeSemantics (FastMemory) |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **1. Prompt Injection (HarmBench)** | 68.2% (Colang rules) | 72.5% (Classifier) | 88.4% (ML Firewall) | 76.0% (Probabilistic) | 🏆 **99.2% (Topological Routing)** |
-| **2. Jailbreak Prevention (JBB)** | 62.1% (Rule-based) | 78.3% (Fine-tuned) | 85.7% (Pattern DB) | 71.4% (Content filter) | 🏆 **97.8% (Attack Topology)** |
-| **3. Indirect Injection Defense** | 22.4% (No support) | 35.1% (Limited) | 72.3% (Active scan) | 41.6% (Partial) | 🏆 **96.4% (RAG Path Analysis)** |
-| **4. Data Exfiltration Prevention** | 45.3% (Output rules) | 55.2% (PII detect) | 82.1% (DLP layer) | 68.3% (Redaction) | 🏆 **99.0% (Semantic Boundary)** |
-| **5. Multi-turn Attack Resilience** | 31.2% (Stateless) | 42.8% (No context) | 65.4% (Session) | 38.9% (Per-message) | 🏆 **95.6% (Conversation Graph)** |
-| **6. Agent Tool Abuse Prevention** | 48.6% (Rail config) | N/A | 55.2% (API only) | N/A | 🏆 **98.4% (CBFDAE Analysis)** |
-| **7. RAG Poisoning Detection** | 15.8% (Not designed) | N/A | 42.6% (Experimental) | 28.4% (Basic) | 🏆 **97.2% (Source Topology)** |
-| **8. Hallucination Factuality** | 52.1% (KB check) | N/A | N/A | 45.3% (Grounding) | 🏆 **94.8% (Provable Paths)** |
-| **9. Multimodal Attack Defense** | N/A (Text only) | 62.4% (Image+Text) | 71.3% (OCR scan) | 78.2% (Vision) | 🏆 **93.6% (Cross-Modal Mesh)** |
-| **10. End-to-End Latency** | 180ms (LLM judge) | 120ms (Inference) | 48ms (API call) | 95ms (Cloud API) | 🏆 **0.8ms (Local Topology)** |
-| **11. MITRE ATLAS Coverage** | 22% (4/18 tactics) | 11% (2/18) | 44% (8/18) | 33% (6/18) | 🏆 **100% (18/18 Tactics)** |
-| **12. Supply Chain Protection** | 15% (Not designed) | N/A | 35.2% (Partial) | N/A | 🏆 **96.8% (Model Provenance)** |
-| **13. Privacy Regulation Compliance** | 25% (Manual) | N/A | 68.4% (EU/US) | 72.1% (Azure policy) | 🏆 **100% (Deterministic Policy)** |
-| **14. False Positive Rate** | 12.4% (Over-blocks) | 8.2% (Moderate) | 4.1% (Tuned) | 6.8% (Adjustable) | 🏆 **0.3% (Surgical Precision)** |
-| **15. Offline / Air-Gap Operation** | ❌ (Requires NeMo) | ✅ (Local model) | ❌ (Cloud API) | ❌ (Cloud API) | 🏆 **✅ (Full Local, 0 deps)** |
+| Benchmark | Result | Details |
+| :--- | :--- | :--- |
+| **Prompt Injection Detection** | **75.0%** (12/16) | Direct, indirect, encoding, delimiter, multi-turn |
+| **Jailbreak Pattern Detection** | **87.5%** (14/16) | DAN, roleplay, hypothetical, crescendo, authority impersonation |
+| **Data Exfiltration Detection** | **100.0%** (12/12) | PII extraction, system prompt, credentials, training data |
+| **Agent Exploitation Detection** | **87.5%** (7/8) | Tool misuse, permission escalation, MCP abuse |
+| **Overall Detection Rate** | **86.5%** (45/52) | Across all attack categories combined |
+| **False Positive Rate** | **0.0%** (0/20) | Zero benign prompts incorrectly flagged |
+| **Avg Latency** | **0.324ms** | P50: 0.282ms · P99: 2.866ms |
+| **MITRE ATLAS Coverage** | **100%** (14/14) | All 14 defined AI attack tactics covered |
+| **Knowledge Base** | **139 rules** | Across 14 security domains |
+| **Offline / Air-Gap** | **✅ Full** | No network calls, no cloud dependencies |
+
+> **Methodology**: 52 known attack prompts + 20 benign prompts tested via pattern matching against the SafeSemantics topology. This is a knowledge-base coverage benchmark — not a runtime ML classifier benchmark. Detection rates reflect how well the ontology's pattern signatures match known attack templates.
+
+### Known Gaps (Areas for Improvement)
+- **Encoded payloads**: Pure Base64/hex payloads without surrounding context are missed (75% PI rate)
+- **Subtle multi-turn**: Benign-appearing first messages in crescendo attacks pass initial detection
+- **Implicit tool abuse**: Tool call requests without explicit dangerous keywords can evade
+- **No ML classifier**: Current detection is pattern-based; an embedding-based classifier would improve recall
 
 ---
 
