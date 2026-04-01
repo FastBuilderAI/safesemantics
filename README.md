@@ -139,6 +139,7 @@ SafeSemantics is a community-driven AI security layer provided free of charge un
 - **FastMemory Engine (Enterprise)**: Revenue-Based (Contact Sales)
 
 🛡️ **[DETAILED LICENSING & REVENUE MODEL](fastmemory-license.md)**
+🏢 **[ENTERPRISE SCALABILITY & CLOUD ARCHITECTURE GUIDE](ENTERPRISE.md)**
 
 ---
 
